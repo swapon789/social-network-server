@@ -41,7 +41,23 @@ async function run() {
             const booking = await postCollection .findOne(query);
             res.send(booking);
         });
-   
+        app.patch('/updateAbout/:id', async (req, res) => {
+            const id = req.params.id;
+            const user = req.body;
+            const query = { _id: ObjectId(id) }
+            const option = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    name: user.displayName,
+                    email: user.email,
+                    university: user.university,
+                    address: user.address,
+                }
+            }
+            const result = await userCollection.updateOne(query, updateDoc, option);
+            res.send(result);
+
+        })
 
 
     }
